@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="project" version="11.1.1.201610211630">
+  <ownedViewpoints name="ProyectoDeportista Design">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="ProyectoDeportista" domainClass="proyectoDeportista.Representacion" enablePopupBars="true">
+      <metamodel href="http://www.example.org/proyectoDeportista#/"/>
+      <defaultLayer name="Default">
+        <nodeMappings name="Deportista" semanticCandidatesExpression="feature:R_Tiene_D" domainClass="proyectoDeportista.Deportista">
+          <style xsi:type="style:WorkspaceImageDescription" labelExpression="feature:nombre" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ProyectoDeportista.project.design/icons/deportista2.png">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="Nutriente" domainClass="proyectoDeportista.Nutriente">
+          <style xsi:type="style:WorkspaceImageDescription" labelExpression="feature:nombreN" sizeComputationExpression="-1" labelPosition="node" resizeKind="NSEW" workspacePath="/ProyectoDeportista.project.design/icons/nutriente.png">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+          <conditionnalStyles predicateExpression="[self.nombreN = NType :: Proteina/]">
+            <style xsi:type="style:WorkspaceImageDescription" labelExpression="feature:nombreN" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ProyectoDeportista.project.design/icons/prote.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.nombreN = NType :: Grasa/]">
+            <style xsi:type="style:WorkspaceImageDescription" labelExpression="feature:nombreN" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ProyectoDeportista.project.design/icons/grasa.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.nombreN = NType :: Carbohidrato/]">
+            <style xsi:type="style:WorkspaceImageDescription" labelExpression="feature:nombreN" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ProyectoDeportista.project.design/icons/carbo.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+        </nodeMappings>
+        <nodeMappings name="Plan" domainClass="proyectoDeportista.PlanNutricional">
+          <style xsi:type="style:WorkspaceImageDescription" labelSize="12" labelExpression="feature:id" sizeComputationExpression="-1" labelPosition="node" resizeKind="NSEW" workspacePath="/ProyectoDeportista.project.design/icons/plan.png">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="Comida" domainClass="proyectoDeportista.Comida">
+          <style xsi:type="style:WorkspaceImageDescription" labelExpression="feature:nCalorias" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ProyectoDeportista.project.design/icons/comida.png">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="Objetivo" domainClass="proyectoDeportista.Objetivo">
+          <style xsi:type="style:WorkspaceImageDescription" labelExpression="feature:tipo" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ProyectoDeportista.project.design/icons/objetive.png">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <edgeMappings name="DeportistaPlanEdge" sourceMapping="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Deportista']" targetMapping="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Plan']" targetFinderExpression="feature:D_RigePor_PN">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="DeportistaObjetivoEdge" sourceMapping="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Deportista']" targetMapping="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Objetivo']" targetFinderExpression="feature:D_Tiene_O">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="PlanComidaEdge" sourceMapping="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Plan']" targetMapping="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Comida']" targetFinderExpression="feature:PN_Tiene_C">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_orange']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="ComidaNutrienteEdge" sourceMapping="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Comida']" targetMapping="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Nutriente']" targetFinderExpression="feature:C_Tiene_N">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <toolSections name="Elementos">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Deportista" nodeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Deportista']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="proyectoDeportista.Deportista" referenceName="R_Tiene_D"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Nutriente" nodeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Nutriente']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="proyectoDeportista.Nutriente" referenceName="R_Tiene_N"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Plan" nodeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Plan']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="proyectoDeportista.PlanNutricional" referenceName="R_Tiene_PN"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Comida" nodeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Comida']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="proyectoDeportista.Comida" referenceName="R_Tiene_C"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Objetivo" nodeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@nodeMappings[name='Objetivo']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="proyectoDeportista.Objetivo" referenceName="R_Tiene_O"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Deportista a Plan" edgeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@edgeMappings[name='DeportistaPlanEdge']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="D_RigePor_PN" valueExpression="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Deportista a Objetivo" edgeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@edgeMappings[name='DeportistaObjetivoEdge']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="D_Tiene_O" valueExpression="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Plan a Comida" edgeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@edgeMappings[name='PlanComidaEdge']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="PN_Tiene_C" valueExpression="var:target"/>
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="C_Asociado_PN" valueExpression="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Comida a Nutriente" edgeMappings="//@ownedViewpoints[name='ProyectoDeportista%20Design']/@ownedRepresentations[name='ProyectoDeportista']/@defaultLayer/@edgeMappings[name='ComidaNutrienteEdge']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="C_Tiene_N" valueExpression="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </defaultLayer>
+    </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="ProyectoDeportista.project.design.Services"/>
+  </ownedViewpoints>
+</description:Group>

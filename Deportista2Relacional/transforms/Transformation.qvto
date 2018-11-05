@@ -1,0 +1,223 @@
+modeltype DeportistaPlan uses proyectoDeportista('http://www.example.org/proyectoDeportista');
+modeltype rel uses RDBMS5('http://RDBMS/5.0');
+
+transformation Transformation(in source:DeportistaPlan, out target:rel);
+
+property contadorComidas:Integer=1;
+property contadorNutrientes:Integer=1;
+property contadorObjetivo:Integer=1;
+
+main() {
+	source.rootObjects()[Representacion]->map mapa2relationalschema();
+}
+
+
+mapping Representacion :: mapa2relationalschema() : RelationalSchema {
+	//
+	result.name := "Representacion";
+	//
+	//Armar Esquema Relacional
+	result.RS_Has_T += object Table {
+		name:="deportista";
+		var ColumnaNombre := object Column{name:="nombre"; type:="String"};
+		T_Has_C+= ColumnaNombre;
+		T_Has_C+= object Column{name:= "edad"; type:="Integer"};
+		T_Has_C+= object Column{name:= "peso"; type:="Integer"};
+		T_Has_C+= object Column{name:= "estatura"; type:="Integer"};
+		T_Has_PK := object PrimaryKey{name:="deportista_PK"; PK_Has_C+=ColumnaNombre;}
+	};
+	
+	var TableDeportista := target.rootObjects()[RelationalSchema].RS_Has_T->selectOne(t:Table|t.name.matches("deportista"));
+	
+	result.RS_Has_T += object Table{
+		name:="plan";
+		var ColumnaPlanID := object Column{name:="planID"; type:="Integer"};
+		T_Has_C+= ColumnaPlanID;
+		T_Has_C+= object Column{name:= "tipo"; type:="String"};
+		T_Has_C+= object Column{name:= "mincalorias"; type:="Integer"};
+		T_Has_C+= object Column{name:= "maxcalorias"; type:="Integer"};
+		var ColumnaNombreDeportista := object Column{name:="nombredeportista";type:="String"};
+		T_Has_C+= ColumnaNombreDeportista;
+		T_Has_PK := object PrimaryKey{name:="plan_PK"; PK_Has_C+=ColumnaPlanID};
+		T_has_FK := object ForeignKey{name:="plan_FK"; FK_Has_C+=ColumnaNombreDeportista; FK_references_PK:=TableDeportista.T_Has_PK}
+	};
+	
+	var TablePlan := target.rootObjects()[RelationalSchema].RS_Has_T->selectOne(t:Table|t.name.matches("plan"));
+	
+	result.RS_Has_T += object Table{
+		name:="comida";
+		var ColumnaComidaID := object Column{name:="comidaID"; type:="Integer"};
+		T_Has_C+= ColumnaComidaID;
+		T_Has_C+= object Column{name:= "calorias"; type:="Integer"};
+		T_Has_C+= object Column{name:= "momento_dia"; type:="String"};
+		var ColumnaPlanID := object Column{name:="planID"; type:="Integer"};
+		T_Has_C+= ColumnaPlanID;
+		T_Has_PK := object PrimaryKey{name:="comida_PK"; PK_Has_C+=ColumnaComidaID};
+		T_has_FK := object ForeignKey{name:="comida_FK"; FK_Has_C+=ColumnaPlanID; FK_references_PK:=TablePlan.T_Has_PK}
+		};
+		
+	var TableComida := target.rootObjects()[RelationalSchema].RS_Has_T->selectOne(t:Table|t.name.matches("comida"));
+	
+	
+	result.RS_Has_T += object Table{
+		name:="nutriente";
+		var ColumnaNutrienteID := object Column{name:="nutrienteID"; type:="Integer"};
+		T_Has_C+= ColumnaNutrienteID;
+		T_Has_C+= object Column{name:= "tipo"; type:="Ntype"};
+		T_Has_C+= object Column{name:= "cantidad"; type:="Integer"};
+//		var ColumnaComidaID := object Column{name:="comidaID"; type:="Integer"};
+//		T_Has_C+= ColumnaComidaID;
+		T_Has_PK := object PrimaryKey{name:="nutriente_PK"; PK_Has_C+=ColumnaNutrienteID};
+//		T_has_FK := object ForeignKey{name:="nutriente_FK"; FK_Has_C+=ColumnaComidaID; FK_references_PK:=TableComida.T_Has_PK}
+	};
+	
+	result.RS_Has_T += object Table{
+		name:="objetivo";
+		var ColumnaObjetivoID := object Column{name:="objetivoID"; type:="Integer"};
+		T_Has_C+= ColumnaObjetivoID;
+		T_Has_C+= object Column{name:= "tipo"; type:="String"};
+		T_Has_C+= object Column{name:= "cantidad"; type:="Integer"};
+//		var ColumnaNombreDeportista := object Column{name:="nombredeportista";type:="String"};
+//		T_Has_C+= ColumnaNombreDeportista;
+		T_Has_PK := object PrimaryKey{name:="objetivo_PK"; PK_Has_C+=ColumnaObjetivoID};
+//		T_has_FK := object ForeignKey{name:="plan_FK"; FK_Has_C+=ColumnaNombreDeportista; FK_references_PK:=TableDeportista.T_Has_PK}
+	};
+	
+	//Para Poblar Tuplas
+	
+	result.RS_Has_T->selectOne(t:Table|t.name.matches("deportista")).T_Has_Tuples += self.R_Tiene_D->map Deportista2Tuple();
+	result.RS_Has_T->selectOne(t:Table|t.name.matches("plan")).T_Has_Tuples += self.R_Tiene_PN->map Plan2Tuple();
+	result.RS_Has_T->selectOne(t:Table|t.name.matches("comida")).T_Has_Tuples += self.R_Tiene_PN.PN_Tiene_C->map Comida2Tuple();
+	result.RS_Has_T->selectOne(t:Table|t.name.matches("nutriente")).T_Has_Tuples += self.R_Tiene_PN.PN_Tiene_C.C_Tiene_N->map Nutriente2Tuple();
+	result.RS_Has_T->selectOne(t:Table|t.name.matches("objetivo")).T_Has_Tuples += self.R_Tiene_D.D_Tiene_O->map Objetivo2Tuple();
+	
+}
+
+//Mapeo de deportista para llamar a mapeo de sus atributos
+mapping Deportista :: Deportista2Tuple() : RMTuple {
+	
+	var TableDeportista := target.rootObjects()[RelationalSchema].RS_Has_T->selectOne(t:Table|t.name.matches("deportista"));
+	result.Tp_Has_CV+= self->map DeportistaNombre2ColumnValue(TableDeportista);
+	result.Tp_Has_CV+= self->map DeportistaEdad2ColumnValue(TableDeportista);
+	result.Tp_Has_CV+= self->map DeportistaPeso2ColumnValue(TableDeportista);
+	result.Tp_Has_CV+= self->map DeportistaEstatura2ColumnValue(TableDeportista);
+}
+
+mapping Deportista :: DeportistaNombre2ColumnValue(in tabla:Table) : ColumnValue {
+	result.value := self.nombre;
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("nombre"));
+}
+mapping Deportista :: DeportistaEdad2ColumnValue(in tabla:Table) : ColumnValue {
+	result.value := self.edad.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("edad"));
+}
+mapping Deportista :: DeportistaPeso2ColumnValue(in tabla:Table) : ColumnValue {
+	result.value := self.peso.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("peso"));
+}
+mapping Deportista :: DeportistaEstatura2ColumnValue(in tabla:Table) : ColumnValue {
+	result.value := self.estatura.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("estatura"));
+}
+
+//Mapeo de plan nutricional para llamar a mapeo de sus atributos
+mapping PlanNutricional :: Plan2Tuple() : RMTuple {
+	var TablePlan := target.rootObjects()[RelationalSchema].RS_Has_T->selectOne(t:Table|t.name.matches("plan"));
+	result.Tp_Has_CV+= self->map PlanId2ColumnValue(TablePlan);
+	result.Tp_Has_CV+= self->map PlanTipo2ColumnValue(TablePlan);
+	result.Tp_Has_CV+= self->map PlanMin2ColumnValue(TablePlan);
+	result.Tp_Has_CV+= self->map PlanMax2ColumnValue(TablePlan);
+	result.Tp_Has_CV+= self->map PlanNombre2ColumnValue(TablePlan);
+}
+
+mapping PlanNutricional :: PlanId2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.id.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("planID"));
+}
+mapping PlanNutricional :: PlanTipo2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.tipoP;
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("tipo"));
+}
+mapping PlanNutricional :: PlanMin2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.minCalorias.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("mincalorias"));	
+}
+mapping PlanNutricional :: PlanMax2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.maxCalorias.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("maxcalorias"));
+}
+mapping PlanNutricional :: PlanNombre2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.PN_asignado_D.nombre;
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("nombredeportista"));
+}
+
+mapping Comida :: Comida2Tuple() : RMTuple {
+	var TableComida := target.rootObjects()[RelationalSchema].RS_Has_T->selectOne(t:Table|t.name.matches("comida"));
+	result.Tp_Has_CV+= self->map ComidaId2ColumnValue(TableComida);
+	result.Tp_Has_CV+= self->map ComidaCalorias2ColumnValue(TableComida);
+	result.Tp_Has_CV+= self->map ComidaMomento2ColumnValue(TableComida);
+	result.Tp_Has_CV+= self->map ComidaPlanId2ColumnValue(TableComida);
+}
+
+mapping Comida :: ComidaId2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := contadorComidas.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("comidaID"));
+	contadorComidas := contadorComidas+1;
+}
+mapping Comida :: ComidaCalorias2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.nCalorias.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("calorias"));
+}
+mapping Comida :: ComidaMomento2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.momento_dia;
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("momento_dia"));
+}
+//
+mapping Comida :: ComidaPlanId2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.C_Asociado_PN.id.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("planID"));
+}
+//
+mapping Nutriente :: Nutriente2Tuple() : RMTuple {
+	var TableNutriente := target.rootObjects()[RelationalSchema].RS_Has_T->selectOne(t:Table|t.name.matches("nutriente"));
+	result.Tp_Has_CV+= self->map NutrienteId2ColumnValue(TableNutriente);
+	result.Tp_Has_CV+= self->map NutrienteNombre2ColumnValue(TableNutriente);
+	result.Tp_Has_CV+= self->map NutrienteCantidad2ColumnValue(TableNutriente);
+}
+
+mapping Nutriente :: NutrienteId2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := contadorNutrientes.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("nutrienteID"));
+	contadorNutrientes := contadorNutrientes+1;
+}
+
+mapping Nutriente :: NutrienteNombre2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.nombreN.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("tipo"))
+}
+mapping Nutriente :: NutrienteCantidad2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.cantidad.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("cantidad"));
+}
+
+mapping Objetivo :: Objetivo2Tuple() : RMTuple {
+	var TableObjetivo := target.rootObjects()[RelationalSchema].RS_Has_T->selectOne(t:Table|t.name.matches("objetivo"));
+	result.Tp_Has_CV+= self->map ObjetivoId2ColumnValue(TableObjetivo);
+	result.Tp_Has_CV+= self->map ObjetivoTipo2ColumnValue(TableObjetivo);
+	result.Tp_Has_CV+= self->map ObjetivoCantidad2ColumnValue(TableObjetivo);
+}
+
+mapping Objetivo :: ObjetivoId2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := contadorObjetivo.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("objetivoID"));
+	contadorObjetivo:= contadorObjetivo+1;
+}
+
+mapping Objetivo :: ObjetivoTipo2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.tipo;
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("tipo"));
+}
+mapping Objetivo :: ObjetivoCantidad2ColumnValue(in tabla:Table) : ColumnValue{
+	result.value := self.cantidad.toString();
+	result.CV_From_C := tabla.T_Has_C->selectOne(c:Column|c.name.matches("cantidad"));
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/ProyectoDeportista/src" modelPluginID="ProyectoDeportista"
+    modelName="ProyectoDeportista" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>proyectoDeportista.ecore</foreignModel>
+  <genPackages prefix="ProyectoDeportista" disposableProviderFactory="true" ecorePackage="proyectoDeportista.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="proyectoDeportista.ecore#//NType">
+      <genEnumLiterals ecoreEnumLiteral="proyectoDeportista.ecore#//NType/Proteina"/>
+      <genEnumLiterals ecoreEnumLiteral="proyectoDeportista.ecore#//NType/Grasa"/>
+      <genEnumLiterals ecoreEnumLiteral="proyectoDeportista.ecore#//NType/Carbohidrato"/>
+    </genEnums>
+    <genClasses ecoreClass="proyectoDeportista.ecore#//Representacion">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Representacion/R_Tiene_D"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Representacion/R_Tiene_PN"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Representacion/R_Tiene_O"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Representacion/R_Tiene_C"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Representacion/R_Tiene_N"/>
+    </genClasses>
+    <genClasses ecoreClass="proyectoDeportista.ecore#//Deportista">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Deportista/nombre"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Deportista/D_Tiene_O"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Deportista/edad"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Deportista/peso"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Deportista/estatura"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Deportista/D_RigePor_PN"/>
+    </genClasses>
+    <genClasses ecoreClass="proyectoDeportista.ecore#//PlanNutricional">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//PlanNutricional/PN_Tiene_C"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//PlanNutricional/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//PlanNutricional/tipoP"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//PlanNutricional/PN_Tiene_R"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//PlanNutricional/PN_asignado_D"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//PlanNutricional/minCalorias"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//PlanNutricional/maxCalorias"/>
+    </genClasses>
+    <genClasses ecoreClass="proyectoDeportista.ecore#//Comida">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Comida/C_Tiene_N"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Comida/nCalorias"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Comida/momento_dia"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference proyectoDeportista.ecore#//Comida/C_Asociado_PN"/>
+    </genClasses>
+    <genClasses ecoreClass="proyectoDeportista.ecore#//Objetivo">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Objetivo/tipo"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Objetivo/cantidad"/>
+    </genClasses>
+    <genClasses ecoreClass="proyectoDeportista.ecore#//Nutriente">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Nutriente/nombreN"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Nutriente/cantidad"/>
+    </genClasses>
+    <genClasses ecoreClass="proyectoDeportista.ecore#//Resultado">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute proyectoDeportista.ecore#//Resultado/cantidad"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

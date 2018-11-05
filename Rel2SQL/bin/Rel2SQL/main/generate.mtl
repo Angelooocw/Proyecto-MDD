@@ -1,0 +1,62 @@
+[comment encoding = UTF-8 /]
+[module generate('http://RDBMS/5.0')]
+
+
+[template public generateElement(rs : RelationalSchema)]
+[comment @main/]
+[file ('RepresentacionFinal.sql', false, 'UTF-8')]
+CREATE SCHEMA [self.name.toLower()/];
+ALTER SCHEMA "[self.name.toLower()/]" OWNER TO grupo3_2017;
+SET search_path = "[self.name.toLower()/]", pg_catalog;
+SET default_tablespace = '';
+SET default_with_oids = false;
+
+[for (t:Table | rs.RS_Has_T)]
+[TableToSQL(t)/]
+[/for]
+
+[for (t:Table | rs.RS_Has_T)]
+[TableToSQLFK(t)/]
+[/for]
+[for (t:Table | rs.RS_Has_T)]
+[TuplasToSQL(t)/]
+[/for]
+[/file]
+[/template]
+
+[template private TableToSQL(t : Table)]
+CREATE TABLE IF NOT EXISTS [t.name.toLower()/] (
+[for (c:Column | t.T_Has_C) separator(',')]
+[c.name.toLower()/][if (c.type='String')] VARCHAR(20)[else][if (c.type='Ntype')] VARCHAR(20) [else][' '+c.type/][/if][/if]
+[/for]
+);
+[KeyToSQL(t.T_Has_PK)/]
+[/template]
+
+[template private KeyToSQL(k : PrimaryKey)]
+
+ALTER TABLE [k.name.replace('_PK','').toLower()/] ADD 
+CONSTRAINT [k.name/] PRIMARY KEY ([for (c:Column | k.PK_Has_C) separator(',')][c.name.toLower()/][/for])
+;
+[/template]
+
+[template private TableToSQLFK(t : Table)]
+[for (f:ForeignKey | t.T_has_FK)]
+[ForeignKeyToSQLFK(f, t.name.toLower())/]
+[/for]
+[/template]
+
+[template private ForeignKeyToSQLFK(fk : ForeignKey, source : String)]
+ALTER TABLE [source/] ADD 
+CONSTRAINT [fk.name/] FOREIGN KEY ([for (c:Column | fk.FK_Has_C) separator(',')][c.name.toLower()/][/for])
+REFERENCES [fk.FK_references_PK.name.replace('_PK','').toLower()/]([for(c:Column | fk.FK_references_PK.PK_Has_C) separator(',')][c.name.toLower()/][/for])
+ON DELETE CASCADE
+;
+[/template]
+
+[template private TuplasToSQL(t : Table)]
+[for (rt : RMTuple | t.T_Has_Tuples)]
+INSERT INTO [t.name.toLower()/] ([for(c:Column | t.T_Has_C)separator(',')][c.name/][/for])
+VALUES ([for(cv:ColumnValue | rt.Tp_Has_CV)separator(',')]'[cv.value  /]'[/for]);
+[/for]
+[/template]
